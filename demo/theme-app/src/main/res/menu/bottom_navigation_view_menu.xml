@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/clear_all"
+        android:icon="@drawable/ic_clear_all_24dp"
+        android:title="Default" />
+
+    <item
+        android:id="@+id/build_in"
+        android:icon="@drawable/ic_settings_24dp"
+        android:title="Build-in" />
+
+    <item
+        android:id="@+id/plug_in"
+        android:icon="@mipmap/ic_launcher"
+        android:title="Plug-in" />
+</menu>

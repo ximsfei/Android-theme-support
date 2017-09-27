@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:text="Text View" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:text="Button" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:hint="Edit Text"
+            android:text="Edit Text" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/picture" />
+
+        <ImageButton
+            android:id="@+id/image_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/picture"
+            android:scaleType="fitXY" />
+
+        <AutoCompleteTextView
+            android:id="@+id/auto"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:text="AutoCompleteTextView" />
+
+
+        <MultiAutoCompleteTextView
+            android:id="@+id/multi_auto"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:text="MultiAutoCompleteTextView" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize" />
+
+                <RadioButton
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize" />
+
+                <RadioButton
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <CheckedTextView
+            android:id="@+id/checked_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:filterTouchesWhenObscured="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:text="CheckedTextView" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="15" />
+
+        <SeekBar
+            android:id="@+id/seekbar_self"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:max="100"
+            android:progress="20" />
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="3"
+            android:stepSize="0.5" />
+    </LinearLayout>
+
+</ScrollView>
