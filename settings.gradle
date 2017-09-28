@@ -1,4 +1,3 @@
-include ':demo:skin-app', ':demo:skin-night', ':demo:skin-autolayout-app', ':demo:theme-app', ':demo:theme-night',
-        ':android-support:skin-support', ':android-support:skin-support-design',
-        ':android-support:skin-support-cardview', ':android-support:skin-support-constraint-layout',
-        ':third-part-support:circleimageview', ':third-part-support:flycotablayout', ':third-part-support:androidautolayout'
+include ':demo:theme-app', ':demo:theme-night',
+        ':android-support:theme-support', ':android-support:theme-support-design',
+        ':android-support:theme-support-cardview', ':android-support:theme-support-constraint-layout'
