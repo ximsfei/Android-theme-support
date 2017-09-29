@@ -3,6 +3,7 @@ package skin.support.widget;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
+import android.graphics.PorterDuff;
 import android.graphics.Shader;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
@@ -145,32 +146,54 @@ public class SkinCompatProgressBarHelper extends SkinCompatHelper {
     }
 
     protected void applyIndeterminateDrawableResource() {
-        Drawable indeterminateDrawable = mIndeterminateDrawableTypedValue.getDrawable();
-        if (indeterminateDrawable != null) {
-            indeterminateDrawable.setBounds(mView.getIndeterminateDrawable().getBounds());
+        // FIXME: Any better way without setIndeterminateTintList?
+        if (mIndeterminateDrawableTypedValue.isTypeNull() && mIndeterminateTintTypedValue.isDataInvalid()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                // FIXME: Any better way without setIndeterminateTintList?
-                if (mIndeterminateDrawableTypedValue.isTypeNull() && mIndeterminateTintTypedValue.isTypeNull()) {
-                    ColorStateList colorStateList = SkinCompatThemeUtils.getColorAccentList(mView.getContext());
-                    if (colorStateList != null) {
-                        mView.setIndeterminateTintList(colorStateList);
-                    }
-                } else {
-                    mView.setIndeterminateDrawableTiled(indeterminateDrawable);
+                ColorStateList colorStateList = SkinCompatThemeUtils.getColorAccentList(mView.getContext());
+                if (colorStateList != null) {
+                    mView.setIndeterminateTintList(colorStateList);
                 }
             } else {
-                mView.setIndeterminateDrawable(tileifyIndeterminate(indeterminateDrawable));
+                int color = SkinCompatThemeUtils.getColorAccent(mView.getContext());
+                if (color != 0 && mView.getIndeterminateDrawable() != null) {
+                    mView.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+                }
+            }
+        } else {
+            Drawable indeterminateDrawable = mIndeterminateDrawableTypedValue.getDrawable();
+            if (indeterminateDrawable != null) {
+                indeterminateDrawable.setBounds(mView.getIndeterminateDrawable().getBounds());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mView.setIndeterminateDrawableTiled(indeterminateDrawable);
+                } else {
+                    mView.setIndeterminateDrawable(tileifyIndeterminate(indeterminateDrawable));
+                }
             }
         }
     }
 
     protected void applyProgressDrawableResource() {
-        Drawable progressDrawable = mProgressDrawableTypedValue.getDrawable();
-        if (progressDrawable != null) {
+        // FIXME: Any better way without setProgressTintList?
+        if (mProgressDrawableTypedValue.isTypeNull() && mProgressDrawableTypedValue.isDataInvalid()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mView.setProgressDrawableTiled(progressDrawable);
+                ColorStateList colorStateList = SkinCompatThemeUtils.getColorAccentList(mView.getContext());
+                if (colorStateList != null) {
+                    mView.setProgressTintList(colorStateList);
+                }
             } else {
-                mView.setProgressDrawable(tileify(progressDrawable, false));
+                int color = SkinCompatThemeUtils.getColorAccent(mView.getContext());
+                if (color != 0 && mView.getProgressDrawable() != null) {
+                    mView.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+                }
+            }
+        } else {
+            Drawable progressDrawable = mProgressDrawableTypedValue.getDrawable();
+            if (progressDrawable != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mView.setProgressDrawableTiled(progressDrawable);
+                } else {
+                    mView.setProgressDrawable(tileify(progressDrawable, false));
+                }
             }
         }
     }
