@@ -67,6 +67,17 @@ public class SkinCompatThemeUtils {
         return colorAccent;
     }
 
+    public static int getColorAccent(Context context) {
+        int colorAccent = 0;
+        TypedArray a = SkinCompatResources.getInstance()
+                .obtainStyledAttributes(context, APPCOMPAT_COLOR_ACCENT_ATTRS);
+        if (a.hasValue(0)) {
+            colorAccent = a.getColor(0, 0);
+        }
+        a.recycle();
+        return colorAccent;
+    }
+
     public static int getStatusBarColor(Context context) {
         int color = 0;
         TypedArray a;
@@ -144,7 +155,7 @@ public class SkinCompatThemeUtils {
 
     public static int getThemeAttrColor(Context context, int attr) {
         TEMP_ARRAY[0] = attr;
-        TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, null, TEMP_ARRAY);
+        TypedArray a = context.obtainStyledAttributes(null, TEMP_ARRAY);
         try {
             return a.getColor(0, 0);
         } finally {
@@ -154,7 +165,7 @@ public class SkinCompatThemeUtils {
 
     public static ColorStateList getThemeAttrColorStateList(Context context, int attr) {
         TEMP_ARRAY[0] = attr;
-        TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, null, TEMP_ARRAY);
+        TypedArray a = context.obtainStyledAttributes(null, TEMP_ARRAY);
         try {
             return a.getColorStateList(0);
         } finally {
