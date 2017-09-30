@@ -22,7 +22,8 @@ public class SkinCompatToolbar extends Toolbar implements SkinCompatSupportable 
     private SkinCompatTypedValue mTitleTextColorTypedValue = new SkinCompatTypedValue();
     private SkinCompatTypedValue mSubtitleTextColorTypedValue = new SkinCompatTypedValue();
     private SkinCompatTypedValue mNavigationIconTypedValue = new SkinCompatTypedValue();
-    private SkinCompatTypedValue mOverflowIconTypedValue = new SkinCompatTypedValue();
+    private SkinCompatTypedValue mOverflowIconTypedSrcCompatValue = new SkinCompatTypedValue();
+    private SkinCompatTypedValue mOverflowIconTypedSrcValue = new SkinCompatTypedValue();
     private SkinCompatBackgroundHelper mBackgroundTintHelper;
 
     public SkinCompatToolbar(Context context) {
@@ -46,10 +47,8 @@ public class SkinCompatToolbar extends Toolbar implements SkinCompatSupportable 
                 .getValue(R.styleable.Toolbar_subtitleTextColor, mSubtitleTextColorTypedValue);
 
         SkinCompatTypedArray a = SkinCompatTypedArray.obtain(context, R.styleable.SkinCompatImageView, R.attr.actionOverflowButtonStyle);
-        a.getValue(R.styleable.SkinCompatImageView_srcCompat, mOverflowIconTypedValue);
-        if (mOverflowIconTypedValue.isDataInvalid()) {
-            a.getValue(R.styleable.SkinCompatImageView_android_src, mOverflowIconTypedValue);
-        }
+        a.getValue(R.styleable.SkinCompatImageView_srcCompat, mOverflowIconTypedSrcCompatValue);
+        a.getValue(R.styleable.SkinCompatImageView_android_src, mOverflowIconTypedSrcValue);
 
         applyTitleTextAppearanceResource();
         applySubtitleTextAppearanceResource();
@@ -109,7 +108,10 @@ public class SkinCompatToolbar extends Toolbar implements SkinCompatSupportable 
     }
 
     private void applyOverflowIcon() {
-        Drawable drawable = mOverflowIconTypedValue.getDrawable();
+        Drawable drawable = mOverflowIconTypedSrcCompatValue.getDrawable();
+        if (drawable == null) {
+            drawable = mOverflowIconTypedSrcValue.getDrawable();
+        }
         if (drawable != null) {
             setOverflowIcon(drawable);
         }

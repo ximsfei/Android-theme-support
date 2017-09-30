@@ -7,13 +7,17 @@ import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.AnyRes;
 import android.support.annotation.AttrRes;
 import android.support.annotation.StyleRes;
 import android.support.annotation.StyleableRes;
+import android.support.annotation.XmlRes;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -157,6 +161,49 @@ public class SkinCompatResources {
         }
     }
 
+    private int fixRes(int resId, String type) {
+        return fixRes(resId, true, type);
+    }
+
+    private int fixRes(int resId, boolean needFix, String type) {
+        if (needFix && resId != 0) {
+            int targetId = getTargetResId(resId, type);
+            if (targetId != 0) {
+                resId = targetId;
+            }
+        }
+        return resId;
+    }
+
+    private int[] fixResArray(int[] array, String type) {
+        return fixResArray(array, true, type);
+    }
+
+    private int[] fixResArray(int[] array, boolean needFix, String type) {
+        int[] newArray = null;
+        if (needFix && array != null) {
+            newArray = new int[array.length];
+            for (int i = 0; i < array.length; i++) {
+                newArray[i] = array[i];
+                if (newArray[i] != 0) {
+                    newArray[i] = fixRes(newArray[i], true, type);
+                }
+            }
+        }
+        if (newArray != null) {
+            return newArray;
+        }
+        return array;
+    }
+
+    public XmlResourceParser getXml(@XmlRes int id) {
+        return mResources.getXml(fixRes(id, mAppContext.getResources().getResourceEntryName(id)));
+    }
+
+    public void getValue(@AnyRes int id, TypedValue outValue, boolean resolveRefs) {
+        mResources.getValue(fixRes(id, mAppContext.getResources().getResourceEntryName(id)), outValue, resolveRefs);
+    }
+
     public SkinCompatTheme newCompatTheme(Context context) {
         SkinCompatTheme theme = mThemeCache.get(context);
         if (theme == null) {
@@ -253,39 +300,8 @@ public class SkinCompatResources {
             }
         }
 
-        private int fixRes(int resId, String type) {
-            return fixRes(resId, true, type);
-        }
-
-        private int fixRes(int resId, boolean needFix, String type) {
-            if (needFix && resId != 0) {
-                int targetId = getTargetResId(resId, type);
-                if (targetId != 0) {
-                    resId = targetId;
-                }
-            }
-            return resId;
-        }
-
-        private int[] fixResArray(int[] array, String type) {
-            return fixResArray(array, true, type);
-        }
-
-        private int[] fixResArray(int[] array, boolean needFix, String type) {
-            int[] newArray = null;
-            if (needFix && array != null) {
-                newArray = new int[array.length];
-                for (int i = 0; i < array.length; i++) {
-                    newArray[i] = array[i];
-                    if (newArray[i] != 0) {
-                        newArray[i] = fixRes(newArray[i], true, type);
-                    }
-                }
-            }
-            if (newArray != null) {
-                return newArray;
-            }
-            return array;
+        public void resolveAttribute(@AttrRes int attr, TypedValue tv, boolean resolveRefs) {
+            mTheme.resolveAttribute(fixRes(attr, "attr"), tv, resolveRefs);
         }
     }
 }

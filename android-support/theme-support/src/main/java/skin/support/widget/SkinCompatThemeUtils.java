@@ -155,7 +155,7 @@ public class SkinCompatThemeUtils {
 
     public static int getThemeAttrColor(Context context, int attr) {
         TEMP_ARRAY[0] = attr;
-        TypedArray a = context.obtainStyledAttributes(null, TEMP_ARRAY);
+        TypedArray a = SkinCompatResources.getInstance().obtainStyledAttributes(context, TEMP_ARRAY);
         try {
             return a.getColor(0, 0);
         } finally {
@@ -165,7 +165,7 @@ public class SkinCompatThemeUtils {
 
     public static ColorStateList getThemeAttrColorStateList(Context context, int attr) {
         TEMP_ARRAY[0] = attr;
-        TypedArray a = context.obtainStyledAttributes(null, TEMP_ARRAY);
+        TypedArray a = SkinCompatResources.getInstance().obtainStyledAttributes(context, TEMP_ARRAY);
         try {
             return a.getColorStateList(0);
         } finally {
@@ -183,7 +183,7 @@ public class SkinCompatThemeUtils {
 
             final TypedValue tv = getTypedValue();
             // Now retrieve the disabledAlpha value from the theme
-            context.getTheme().resolveAttribute(android.R.attr.disabledAlpha, tv, true);
+            SkinCompatResources.getInstance().newCompatTheme(context).resolveAttribute(android.R.attr.disabledAlpha, tv, true);
             final float disabledAlpha = tv.getFloat();
 
             return getThemeAttrColor(context, attr, disabledAlpha);
