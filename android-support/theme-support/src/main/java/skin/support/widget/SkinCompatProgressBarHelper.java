@@ -147,7 +147,11 @@ public class SkinCompatProgressBarHelper extends SkinCompatHelper {
 
     protected void applyIndeterminateDrawableResource() {
         // FIXME: Any better way without setIndeterminateTintList?
+<<<<<<< HEAD
         if (mIndeterminateDrawableTypedValue.isTypeNull() && mIndeterminateTintTypedValue.isDataInvalid()) {
+=======
+        if (mIndeterminateDrawableTypedValue.isTypeNull() && mIndeterminateTintTypedValue.isTypeNull()) {
+>>>>>>> d5c03571705b8719a40fd98b18ac8a915d1e410f
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ColorStateList colorStateList = SkinCompatThemeUtils.getColorAccentList(mView.getContext());
                 if (colorStateList != null) {
