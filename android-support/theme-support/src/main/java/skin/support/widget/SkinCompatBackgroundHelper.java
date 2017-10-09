@@ -123,14 +123,13 @@ public class SkinCompatBackgroundHelper extends SkinCompatHelper {
     }
 
     public void applySkin() {
+        Drawable drawable = mBackgroundTypedValue.getDrawable();
+        if (drawable != null) {
+            ViewCompat.setBackground(mView, drawable);
+        }
         ColorStateList tint = mBackgroundTypedValue.getTintList();
         if (tint != null) {
             setInternalBackgroundTint(tint);
-        } else {
-            Drawable drawable = mBackgroundTypedValue.getDrawable();
-            if (drawable != null) {
-                ViewCompat.setBackground(mView, drawable);
-            }
         }
     }
 }
