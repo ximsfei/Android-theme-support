@@ -261,6 +261,10 @@ public class SkinCompatResources {
             reset(mResources);
         }
 
+        public Resources.Theme getTheme() {
+            return mTheme;
+        }
+
         public void reset(Resources resources) {
             int themeId = getTargetResId(mThemeResId, "style");
             if (themeId != 0) {

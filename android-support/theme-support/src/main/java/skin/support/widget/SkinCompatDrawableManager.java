@@ -18,7 +18,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.util.LongSparseArray;
@@ -177,7 +176,7 @@ public class SkinCompatDrawableManager {
             drawable = createDrawableIfNeeded(context, resId);
         }
         if (drawable == null) {
-            drawable = ContextCompat.getDrawable(context, resId);
+            drawable = SkinCompatResources.getInstance().getDrawable(resId);
         }
 
         if (drawable != null) {
@@ -710,7 +709,7 @@ public class SkinCompatDrawableManager {
                                            @NonNull AttributeSet attrs, @Nullable Resources.Theme theme) {
             try {
                 return VectorDrawableCompat
-                        .createFromXmlInner(context.getResources(), parser, attrs, theme);
+                        .createFromXmlInner(SkinCompatResources.getInstance().getSkinResources(), parser, attrs, SkinCompatResources.getInstance().newCompatTheme(context).getTheme());
             } catch (Exception e) {
                 Log.e("VdcInflateDelegate", "Exception while inflating <vector>", e);
                 return null;
@@ -730,7 +729,7 @@ public class SkinCompatDrawableManager {
                                            @NonNull AttributeSet attrs, @Nullable Resources.Theme theme) {
             try {
                 return AnimatedVectorDrawableCompat
-                        .createFromXmlInner(context, context.getResources(), parser, attrs, theme);
+                        .createFromXmlInner(context, SkinCompatResources.getInstance().getSkinResources(), parser, attrs, SkinCompatResources.getInstance().newCompatTheme(context).getTheme());
             } catch (Exception e) {
                 Log.e("AvdcInflateDelegate", "Exception while inflating <animated-vector>", e);
                 return null;
