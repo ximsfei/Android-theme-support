@@ -14,6 +14,7 @@ import skin.support.content.res.SkinCompatTypedValue;
 public class SkinCompatImageHelper extends SkinCompatHelper {
     private static final String TAG = SkinCompatImageHelper.class.getSimpleName();
     private final ImageView mView;
+    private SkinCompatTypedValue mSrcCompatTypedValue = new SkinCompatTypedValue();
     private SkinCompatTypedValue mSrcTypedValue = new SkinCompatTypedValue();
 
     public SkinCompatImageHelper(ImageView imageView) {
@@ -23,10 +24,8 @@ public class SkinCompatImageHelper extends SkinCompatHelper {
     public void loadFromAttributes(AttributeSet attrs, int defStyleAttr) {
         SkinCompatTypedArray a = SkinCompatTypedArray.obtain(mView.getContext(),
                 attrs, R.styleable.SkinCompatImageView, defStyleAttr);
-        a.getValue(R.styleable.SkinCompatImageView_srcCompat, mSrcTypedValue);
-        if (mSrcTypedValue.isDataInvalid()) {
-            a.getValue(R.styleable.SkinCompatImageView_android_src, mSrcTypedValue);
-        }
+        a.getValue(R.styleable.SkinCompatImageView_srcCompat, mSrcCompatTypedValue);
+        a.getValue(R.styleable.SkinCompatImageView_android_src, mSrcTypedValue);
         applySkin();
     }
 
@@ -36,7 +35,10 @@ public class SkinCompatImageHelper extends SkinCompatHelper {
     }
 
     public void applySkin() {
-        Drawable drawable = mSrcTypedValue.getDrawable();
+        Drawable drawable = mSrcCompatTypedValue.getDrawable();
+        if (drawable == null) {
+            drawable = mSrcTypedValue.getDrawable();
+        }
         if (drawable != null) {
             mView.setImageDrawable(drawable);
         }

@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import skin.support.SkinCompatManager;
+import skin.support.widget.SkinCompatContextWrapper;
 import skin.support.widget.SkinCompatDrawableManager;
 
 public class SkinCompatResources {
@@ -258,6 +259,8 @@ public class SkinCompatResources {
                     }
                 } catch (Exception e) {
                 }
+            } else if (context instanceof SkinCompatContextWrapper) {
+                mThemeResId = ((SkinCompatContextWrapper) context).getThemeResId();
             }
             if (mThemeResId == 0) {
                 mThemeResId = context.getApplicationInfo().theme;

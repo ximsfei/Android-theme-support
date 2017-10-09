@@ -156,7 +156,16 @@ public class SkinCompatTypedValue {
         } else if (isTypeAttr()) {
             if (data != INVALID_ID) {
                 TypedArray a = SkinCompatResources.getInstance().obtainStyledAttributes(context, new int[]{data});
-                drawable = a.getDrawable(0);
+                int resourceId = a.getResourceId(0, INVALID_ID);
+                if (resourceId != INVALID_ID && resourceId >> 24 != 0x1) {
+                    int resId = context.getResources().getIdentifier(a.getResources().getResourceEntryName(resourceId), a.getResources().getResourceTypeName(resourceId), context.getPackageName());
+                    if (resId != INVALID_ID) {
+                        resourceId = resId;
+                        drawable = SkinCompatDrawableManager.get().getDrawable(context, resourceId);
+                    }
+                } else {
+                    drawable = a.getDrawable(0);
+                }
                 a.recycle();
             }
         } else if (isTypeRes()) {

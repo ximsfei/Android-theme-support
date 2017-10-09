@@ -10,7 +10,6 @@ import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.appcompat.R;
 import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.widget.TintContextWrapper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.InflateException;
@@ -24,10 +23,12 @@ import java.util.Map;
 import skin.support.SkinCompatManager;
 import skin.support.view.menu.SkinCompatActionMenuItemView;
 import skin.support.view.menu.SkinCompatListMenuItemView;
+import skin.support.widget.SkinCompatActionBarContextView;
 import skin.support.widget.SkinCompatAutoCompleteTextView;
 import skin.support.widget.SkinCompatButton;
 import skin.support.widget.SkinCompatCheckBox;
 import skin.support.widget.SkinCompatCheckedTextView;
+import skin.support.widget.SkinCompatContextWrapper;
 import skin.support.widget.SkinCompatEditText;
 import skin.support.widget.SkinCompatFrameLayout;
 import skin.support.widget.SkinCompatImageButton;
@@ -81,7 +82,7 @@ public class SkinCompatViewInflater {
             context = themifyContext(context, attrs, readAndroidTheme, readAppTheme);
         }
         if (wrapContext) {
-            context = TintContextWrapper.wrap(context);
+            context = SkinCompatContextWrapper.wrap(context);
         }
 
         View view = createViewFromHackInflater(context, name, attrs);
@@ -205,6 +206,9 @@ public class SkinCompatViewInflater {
                 break;
             case "android.support.v7.view.menu.ListMenuItemView":
                 view = new SkinCompatListMenuItemView(context, attrs);
+                break;
+            case "android.support.v7.widget.ActionBarContextView":
+                view = new SkinCompatActionBarContextView(context, attrs);
                 break;
         }
         return view;
