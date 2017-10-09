@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import skin.support.SkinCompatManager;
+import skin.support.widget.SkinCompatDrawableManager;
 
 public class SkinCompatResources {
     private static volatile SkinCompatResources sInstance;
@@ -60,6 +61,7 @@ public class SkinCompatResources {
         mStrategy = null;
         isDefaultSkin = true;
         resetThemeMap();
+        SkinCompatDrawableManager.get().reset();
     }
 
     @Deprecated
@@ -70,6 +72,7 @@ public class SkinCompatResources {
         mStrategy = null;
         isDefaultSkin = mAppContext.getPackageName().equals(pkgName);
         resetThemeMap();
+        SkinCompatDrawableManager.get().reset();
     }
 
     public void setupSkin(Resources resources, String pkgName, String skinName, SkinCompatManager.SkinLoaderStrategy strategy) {
@@ -79,6 +82,7 @@ public class SkinCompatResources {
         mStrategy = strategy;
         isDefaultSkin = TextUtils.isEmpty(skinName);
         resetThemeMap();
+        SkinCompatDrawableManager.get().reset();
     }
 
     private void resetThemeMap() {

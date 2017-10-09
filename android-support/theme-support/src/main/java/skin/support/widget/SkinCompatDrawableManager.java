@@ -524,7 +524,7 @@ public class SkinCompatDrawableManager {
             } else if (arrayContains(TINT_COLOR_CONTROL_STATE_LIST, resId)) {
                 tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_default);
             } else if (arrayContains(TINT_CHECKABLE_BUTTON_LIST, resId)) {
-                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_btn_checkable);
+                tint = createCheckableColorStateList(context, getThemeAttrColor(context, R.attr.colorButtonNormal));
             } else if (resId == R.drawable.abc_seekbar_thumb_material) {
                 tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_seek_thumb);
             }
@@ -602,6 +602,31 @@ public class SkinCompatDrawableManager {
         return new ColorStateList(states, colors);
     }
 
+    private ColorStateList createCheckableColorStateList(@NonNull final Context context,
+                                                      @ColorInt final int baseColor) {
+        final int[][] states = new int[3][];
+        final int[] colors = new int[3];
+        int i = 0;
+
+        final int colorControlActivated = getThemeAttrColor(context, R.attr.colorControlActivated);
+        final int disabledColor = getDisabledThemeAttrColor(context, R.attr.colorControlNormal);
+
+        // Disabled state
+        states[i] = SkinCompatThemeUtils.DISABLED_STATE_SET;
+        colors[i] = disabledColor;
+        i++;
+
+        states[i] = SkinCompatThemeUtils.CHECKED_STATE_SET;
+        colors[i] = compositeColors(colorControlActivated, baseColor);
+        i++;
+
+        // Default enabled state
+        states[i] = SkinCompatThemeUtils.EMPTY_STATE_SET;
+        colors[i] = baseColor;
+        i++;
+
+        return new ColorStateList(states, colors);
+    }
 
 
     private static class ColorFilterLruCache extends LruCache<Integer, PorterDuffColorFilter> {
@@ -735,5 +760,13 @@ public class SkinCompatDrawableManager {
                 return null;
             }
         }
+    }
+
+    public void reset() {
+        mDrawableCaches.clear();
+        if (mTintLists != null) {
+            mTintLists.clear();
+        }
+        COLOR_FILTER_CACHE.evictAll();
     }
 }
