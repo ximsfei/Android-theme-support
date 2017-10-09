@@ -170,7 +170,7 @@ public class SkinCompatTypedValue {
             }
         } else if (isTypeRes()) {
             if (data != INVALID_ID) {
-                drawable = SkinCompatResources.getInstance().getDrawable(data);
+                drawable = SkinCompatDrawableManager.get().getDrawable(context, data);
             }
         }
         return drawable;

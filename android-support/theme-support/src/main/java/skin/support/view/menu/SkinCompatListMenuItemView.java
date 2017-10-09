@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 
 import skin.support.R;
 import skin.support.content.res.SkinCompatResources;
+import skin.support.widget.SkinCompatDrawableManager;
 import skin.support.widget.SkinCompatSupportable;
 
 import static skin.support.widget.SkinCompatHelper.INVALID_ID;
@@ -67,7 +68,7 @@ public class SkinCompatListMenuItemView extends ListMenuItemView implements Skin
 
     private void applyIconResource() {
         if (mIconResId != INVALID_ID && getItemData() != null) {
-            Drawable icon = SkinCompatResources.getInstance().getDrawable(mIconResId);
+            Drawable icon = SkinCompatDrawableManager.get().getDrawable(getContext(), mIconResId);
             if (icon != null) {
                 setIcon(icon);
             }
@@ -87,6 +88,6 @@ public class SkinCompatListMenuItemView extends ListMenuItemView implements Skin
     @Override
     public void applySkin() {
         applyIconResource();
-        applyIconResource();
+        applyBackgroundResource();
     }
 }

@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 
 import java.lang.reflect.Field;
 
-import skin.support.content.res.SkinCompatResources;
+import skin.support.widget.SkinCompatDrawableManager;
 import skin.support.widget.SkinCompatSupportable;
 import skin.support.widget.SkinCompatTextHelper;
 import skin.support.widget.SkinableTextView;
@@ -116,7 +116,7 @@ public class SkinCompatActionMenuItemView extends ActionMenuItemView implements 
 
     private void applyIconResource() {
         if (mIconResId != INVALID_ID && getItemData() != null) {
-            Drawable icon = SkinCompatResources.getInstance().getDrawable(mIconResId);
+            Drawable icon = SkinCompatDrawableManager.get().getDrawable(getContext(), mIconResId);
             if (icon != null) {
                 setIcon(icon);
             }
