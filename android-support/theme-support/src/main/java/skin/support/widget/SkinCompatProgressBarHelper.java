@@ -146,54 +146,25 @@ public class SkinCompatProgressBarHelper extends SkinCompatHelper {
     }
 
     protected void applyIndeterminateDrawableResource() {
-        // FIXME: Any better way without setIndeterminateTintList?
-        if (mIndeterminateDrawableTypedValue.isTypeNull() && mIndeterminateTintTypedValue.isDataInvalid()) {
+
+        Drawable indeterminateDrawable = mIndeterminateDrawableTypedValue.getDrawable();
+        if (indeterminateDrawable != null) {
+            indeterminateDrawable.setBounds(mView.getIndeterminateDrawable().getBounds());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ColorStateList colorStateList = SkinCompatThemeUtils.getColorAccentList(mView.getContext());
-                if (colorStateList != null) {
-                    mView.setIndeterminateTintList(colorStateList);
-                }
+                mView.setIndeterminateDrawableTiled(indeterminateDrawable);
             } else {
-                int color = SkinCompatThemeUtils.getColorAccent(mView.getContext());
-                if (color != 0 && mView.getIndeterminateDrawable() != null) {
-                    mView.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
-                }
-            }
-        } else {
-            Drawable indeterminateDrawable = mIndeterminateDrawableTypedValue.getDrawable();
-            if (indeterminateDrawable != null) {
-                indeterminateDrawable.setBounds(mView.getIndeterminateDrawable().getBounds());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    mView.setIndeterminateDrawableTiled(indeterminateDrawable);
-                } else {
-                    mView.setIndeterminateDrawable(tileifyIndeterminate(indeterminateDrawable));
-                }
+                mView.setIndeterminateDrawable(tileifyIndeterminate(indeterminateDrawable));
             }
         }
     }
 
     protected void applyProgressDrawableResource() {
-        // FIXME: Any better way without setProgressTintList?
-        if (mProgressDrawableTypedValue.isTypeNull() && mProgressDrawableTypedValue.isDataInvalid()) {
+        Drawable progressDrawable = mProgressDrawableTypedValue.getDrawable();
+        if (progressDrawable != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ColorStateList colorStateList = SkinCompatThemeUtils.getColorAccentList(mView.getContext());
-                if (colorStateList != null) {
-                    mView.setProgressTintList(colorStateList);
-                }
+                mView.setProgressDrawableTiled(progressDrawable);
             } else {
-                int color = SkinCompatThemeUtils.getColorAccent(mView.getContext());
-                if (color != 0 && mView.getProgressDrawable() != null) {
-                    mView.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
-                }
-            }
-        } else {
-            Drawable progressDrawable = mProgressDrawableTypedValue.getDrawable();
-            if (progressDrawable != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    mView.setProgressDrawableTiled(progressDrawable);
-                } else {
-                    mView.setProgressDrawable(tileify(progressDrawable, false));
-                }
+                mView.setProgressDrawable(tileify(progressDrawable, false));
             }
         }
     }
