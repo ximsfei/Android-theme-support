@@ -18,6 +18,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.util.LongSparseArray;
@@ -505,11 +506,21 @@ public class SkinCompatDrawableManager {
         if (tint == null) {
             // ...if the cache did not contain a color state list, try and create one
             if (resId == R.drawable.abc_edit_text_material) {
-                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_edittext);
+//                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_edittext);
+                tint = createPressedColorStateList(context, getThemeAttrColor(context, R.attr.colorControlActivated));
             } else if (resId == R.drawable.abc_switch_track_mtrl_alpha) {
-                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_switch_track);
+//                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_switch_track);
+                int colorForeground = getThemeAttrColor(context, android.R.attr.colorForeground);
+                int colorControlActivated = getThemeAttrColor(context, R.attr.colorControlActivated);
+                tint = createCheckableColorStateList(ColorUtils.setAlphaComponent(colorForeground, Math.round(Color.alpha(colorForeground) * 0.1f)),
+                        ColorUtils.setAlphaComponent(colorControlActivated, Math.round(Color.alpha(colorControlActivated) * 0.3f)),
+                        ColorUtils.setAlphaComponent(colorForeground, Math.round(Color.alpha(colorForeground) * 0.3f)));
             } else if (resId == R.drawable.abc_switch_thumb_material) {
-                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_switch_thumb);
+//                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_switch_thumb);
+                int colorControlActivated = getThemeAttrColor(context, R.attr.colorControlActivated);
+                tint = createCheckableColorStateList(getDisabledThemeAttrColor(context, R.attr.colorSwitchThumbNormal),
+                        ColorUtils.setAlphaComponent(colorControlActivated, Math.round(Color.alpha(colorControlActivated) * 0.3f)),
+                        getThemeAttrColor(context, R.attr.colorSwitchThumbNormal));
             } else if (resId == R.drawable.abc_btn_default_mtrl_shape) {
                 tint = createDefaultButtonColorStateList(context);
             } else if (resId == R.drawable.abc_btn_borderless_material) {
@@ -518,15 +529,18 @@ public class SkinCompatDrawableManager {
                 tint = createColoredButtonColorStateList(context);
             } else if (resId == R.drawable.abc_spinner_mtrl_am_alpha
                     || resId == R.drawable.abc_spinner_textfield_background_material) {
-                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_spinner);
+//                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_spinner);
+                tint = createPressedColorStateList(context, getThemeAttrColor(context, R.attr.colorControlActivated));
             } else if (arrayContains(TINT_COLOR_CONTROL_NORMAL, resId)) {
                 tint = getThemeAttrColorStateList(context, R.attr.colorControlNormal);
             } else if (arrayContains(TINT_COLOR_CONTROL_STATE_LIST, resId)) {
-                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_default);
+//                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_default);
+                tint = createDefaultColorStateList(context, getThemeAttrColor(context, R.attr.colorControlNormal));
             } else if (arrayContains(TINT_CHECKABLE_BUTTON_LIST, resId)) {
                 tint = createCheckableColorStateList(context, getThemeAttrColor(context, R.attr.colorButtonNormal));
             } else if (resId == R.drawable.abc_seekbar_thumb_material) {
-                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_seek_thumb);
+//                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_seek_thumb);
+                tint = createSeekThumbColorStateList(context, getThemeAttrColor(context, R.attr.colorControlActivated));
             }
 
             if (tint != null) {
@@ -602,8 +616,38 @@ public class SkinCompatDrawableManager {
         return new ColorStateList(states, colors);
     }
 
+    private ColorStateList createPressedColorStateList(@NonNull final Context context,
+                                                       @ColorInt final int baseColor) {
+        final int[][] states = new int[4][];
+        final int[] colors = new int[4];
+        int i = 0;
+
+        final int colorControlNormal = getThemeAttrColor(context, R.attr.colorControlNormal);
+        final int disabledColor = getDisabledThemeAttrColor(context, R.attr.colorControlNormal);
+
+        // Disabled state
+        states[i] = SkinCompatThemeUtils.DISABLED_STATE_SET;
+        colors[i] = disabledColor;
+        i++;
+
+        states[i] = SkinCompatThemeUtils.PRESSED_STATE_SET;
+        colors[i] = compositeColors(colorControlNormal, baseColor);
+        i++;
+
+        states[i] = SkinCompatThemeUtils.FOCUSED_STATE_SET;
+        colors[i] = compositeColors(colorControlNormal, baseColor);
+        i++;
+
+        // Default enabled state
+        states[i] = SkinCompatThemeUtils.EMPTY_STATE_SET;
+        colors[i] = baseColor;
+        i++;
+
+        return new ColorStateList(states, colors);
+    }
+
     private ColorStateList createCheckableColorStateList(@NonNull final Context context,
-                                                      @ColorInt final int baseColor) {
+                                                         @ColorInt final int baseColor) {
         final int[][] states = new int[3][];
         final int[] colors = new int[3];
         int i = 0;
@@ -628,6 +672,92 @@ public class SkinCompatDrawableManager {
         return new ColorStateList(states, colors);
     }
 
+    private ColorStateList createCheckableColorStateList(@ColorInt final int disabledColor,
+                                                         @ColorInt final int colorControlActivated,
+                                                         @ColorInt final int baseColor) {
+        final int[][] states = new int[3][];
+        final int[] colors = new int[3];
+        int i = 0;
+
+        // Disabled state
+        states[i] = SkinCompatThemeUtils.DISABLED_STATE_SET;
+        colors[i] = disabledColor;
+        i++;
+
+        states[i] = SkinCompatThemeUtils.CHECKED_STATE_SET;
+        colors[i] = compositeColors(colorControlActivated, baseColor);
+        i++;
+
+        // Default enabled state
+        states[i] = SkinCompatThemeUtils.EMPTY_STATE_SET;
+        colors[i] = baseColor;
+        i++;
+
+        return new ColorStateList(states, colors);
+    }
+
+    private ColorStateList createSeekThumbColorStateList(@NonNull Context context,
+                                                         @ColorInt final int baseColor) {
+        final int[][] states = new int[2][];
+        final int[] colors = new int[2];
+        int i = 0;
+
+        final int disabledColor = getDisabledThemeAttrColor(context, R.attr.colorControlActivated);
+
+        // Disabled state
+        states[i] = SkinCompatThemeUtils.DISABLED_STATE_SET;
+        colors[i] = disabledColor;
+        i++;
+
+        // Default enabled state
+        states[i] = SkinCompatThemeUtils.EMPTY_STATE_SET;
+        colors[i] = baseColor;
+        i++;
+
+        return new ColorStateList(states, colors);
+    }
+
+    private ColorStateList createDefaultColorStateList(@NonNull Context context,
+                                                       @ColorInt int baseColor) {
+        final int[][] states = new int[7][];
+        final int[] colors = new int[7];
+        int i = 0;
+
+        final int disabledColor = getDisabledThemeAttrColor(context, R.attr.colorControlNormal);
+        final int colorControlActivated = getThemeAttrColor(context, R.attr.colorControlActivated);
+
+        // Disabled state
+        states[i] = SkinCompatThemeUtils.DISABLED_STATE_SET;
+        colors[i] = disabledColor;
+        i++;
+
+        states[i] = SkinCompatThemeUtils.PRESSED_STATE_SET;
+        colors[i] = compositeColors(colorControlActivated, baseColor);
+        i++;
+
+        states[i] = SkinCompatThemeUtils.FOCUSED_STATE_SET;
+        colors[i] = compositeColors(colorControlActivated, baseColor);
+        i++;
+
+        states[i] = SkinCompatThemeUtils.ACTIVATED_STATE_SET;
+        colors[i] = compositeColors(colorControlActivated, baseColor);
+        i++;
+
+        states[i] = SkinCompatThemeUtils.SELECTED_STATE_SET;
+        colors[i] = compositeColors(colorControlActivated, baseColor);
+        i++;
+
+        states[i] = SkinCompatThemeUtils.CHECKED_STATE_SET;
+        colors[i] = compositeColors(colorControlActivated, baseColor);
+        i++;
+
+        // Default enabled state
+        states[i] = SkinCompatThemeUtils.EMPTY_STATE_SET;
+        colors[i] = baseColor;
+        i++;
+
+        return new ColorStateList(states, colors);
+    }
 
     private static class ColorFilterLruCache extends LruCache<Integer, PorterDuffColorFilter> {
 
