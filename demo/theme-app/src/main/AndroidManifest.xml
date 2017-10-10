@@ -22,6 +22,8 @@
 
         <activity android:name="theme.support.demo.basic.WidgetActivity" />
 
+        <activity android:name="theme.support.demo.test.TestActivity" />
+
         <activity
             android:name="theme.support.demo.mdtab.CollapsingToolbarLayoutActivity"
             android:label="CollapsingToolbarLayoutActivity" />

@@ -18,13 +18,13 @@ import android.widget.TextView;
 
 import theme.support.demo.basic.WidgetActivity;
 import theme.support.demo.mdtab.MaterialDesignActivity;
+import theme.support.demo.test.TestActivity;
 
 public class MainActivity extends BaseActivity {
     private ListView mListView;
     private Context mContext = this;
-    private final String[] mItems = {"基础控件", "Material Design"}; //, "ConstraintLayout", "FlycoTabLayout", "AlertDialog"
-    private final Class<?>[] mClasses = {WidgetActivity.class, MaterialDesignActivity.class};//, ConstraintLayoutActivity.class,
-//            SimpleHomeActivity.class, AlertDialogActivity.class};
+    private final String[] mItems = {"基础控件", "Material Design", "Test"};
+    private final Class<?>[] mClasses = {WidgetActivity.class, MaterialDesignActivity.class, TestActivity.class};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
