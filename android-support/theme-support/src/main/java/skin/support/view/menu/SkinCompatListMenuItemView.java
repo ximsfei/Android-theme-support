@@ -89,12 +89,10 @@ public class SkinCompatListMenuItemView extends ListMenuItemView {
         if (drawable != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && drawable instanceof RippleDrawable) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            SkinCompatThemeUtils.getThemeAttrColor(getContext(), android.R.attr.colorBackground));
+                    ColorDrawable colorDrawable = new ColorDrawable(colorBackground);
                     ((RippleDrawable) drawable).addLayer(colorDrawable);
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ColorDrawable colorDrawable = new ColorDrawable(
-                            SkinCompatThemeUtils.getThemeAttrColor(getContext(), android.R.attr.colorBackground));
+                    ColorDrawable colorDrawable = new ColorDrawable(colorBackground);
                     ColorStateList rippleColorStateList = getResources().getColorStateList(android.R.color.darker_gray);
                     if (rippleColorStateList != null) {
                         drawable = new RippleDrawable(rippleColorStateList, colorDrawable, null);
