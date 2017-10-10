@@ -537,7 +537,7 @@ public class SkinCompatDrawableManager {
 //                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_default);
                 tint = createDefaultColorStateList(context, getThemeAttrColor(context, R.attr.colorControlNormal));
             } else if (arrayContains(TINT_CHECKABLE_BUTTON_LIST, resId)) {
-                tint = createCheckableColorStateList(context, getThemeAttrColor(context, R.attr.colorButtonNormal));
+                tint = createCheckableColorStateList(context, getThemeAttrColor(context, R.attr.colorControlNormal));
             } else if (resId == R.drawable.abc_seekbar_thumb_material) {
 //                tint = SkinCompatResources.getInstance().getColorStateList(R.color.abc_tint_seek_thumb);
                 tint = createSeekThumbColorStateList(context, getThemeAttrColor(context, R.attr.colorControlActivated));
