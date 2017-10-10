@@ -15,7 +15,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import skin.support.R;
-import skin.support.content.res.SkinCompatResources;
 import skin.support.content.res.SkinCompatTypedArray;
 import skin.support.content.res.SkinCompatTypedValue;
 
@@ -24,6 +23,8 @@ import skin.support.content.res.SkinCompatTypedValue;
  */
 
 public class SkinCompatTextHelper extends SkinCompatHelper {
+    private static Class<?> mEditorClass;
+
     private SkinCompatTypedValue mTextAppearanceTypedValue = new SkinCompatTypedValue();
     private SkinCompatTypedValue mTextColorTypedValue = new SkinCompatTypedValue();
     private SkinCompatTypedValue mTextColorHintTypedValue = new SkinCompatTypedValue();
@@ -99,7 +100,7 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
         if (error != null) {
             try {
                 Object editor = getEditor();
-                Class<?> clazz = editor.getClass();
+                Class<?> clazz = getEditorClass();
                 Field errorPopupField = clazz.getDeclaredField("mErrorPopup");
                 errorPopupField.setAccessible(true);
                 Object errorPopup = errorPopupField.get(editor);
@@ -169,7 +170,7 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
     public void applyTextCursorDrawableResource() {
         try {
             Object editor = getEditor();
-            Class<?> clazz = editor.getClass();
+            Class<?> clazz = getEditorClass();
             Field cursorDrawableField = clazz.getDeclaredField("mCursorDrawable");
             cursorDrawableField.setAccessible(true);
 
@@ -187,7 +188,7 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
     public void applyTextSelectHandleResource() {
         try {
             Object editor = getEditor();
-            Class<?> clazz = editor.getClass();
+            Class<?> clazz = getEditorClass();
 
             Field selectHandleLeftField = clazz.getDeclaredField("mSelectHandleLeft");
             selectHandleLeftField.setAccessible(true);
@@ -213,7 +214,7 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
 
     private void applyTextSelectHandleResource(Object editor, String controllerStr, String handleStr, Drawable drawableLeft, Drawable drawableRight) {
         try {
-            Field controllerField = editor.getClass().getDeclaredField(controllerStr);
+            Field controllerField = getEditorClass().getDeclaredField(controllerStr);
             controllerField.setAccessible(true);
 
             Object controller = controllerField.get(editor);
@@ -245,6 +246,13 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
             mEditor = editorField.get(mView);
         }
         return mEditor;
+    }
+
+    private Class<?> getEditorClass() throws Exception {
+        if (mEditorClass == null) {
+             mEditorClass = Class.forName("android.widget.Editor");
+        }
+        return mEditorClass;
     }
 
     public void onSetCompoundDrawablesRelativeWithIntrinsicBounds(
