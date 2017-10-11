@@ -202,11 +202,11 @@ public class SkinCompatResources {
     }
 
     public XmlResourceParser getXml(@XmlRes int id) {
-        return mResources.getXml(fixRes(id, mAppContext.getResources().getResourceEntryName(id)));
+        return mResources.getXml(fixRes(id, mAppContext.getResources().getResourceTypeName(id)));
     }
 
     public void getValue(@AnyRes int id, TypedValue outValue, boolean resolveRefs) {
-        mResources.getValue(fixRes(id, mAppContext.getResources().getResourceEntryName(id)), outValue, resolveRefs);
+        mResources.getValue(fixRes(id, mAppContext.getResources().getResourceTypeName(id)), outValue, resolveRefs);
     }
 
     public SkinCompatTheme newCompatTheme(Context context) {
