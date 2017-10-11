@@ -146,14 +146,24 @@ public class SkinCompatProgressBarHelper extends SkinCompatHelper {
     }
 
     protected void applyIndeterminateDrawableResource() {
-
-        Drawable indeterminateDrawable = mIndeterminateDrawableTypedValue.getDrawable();
-        if (indeterminateDrawable != null) {
-            indeterminateDrawable.setBounds(mView.getIndeterminateDrawable().getBounds());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mView.setIndeterminateDrawableTiled(indeterminateDrawable);
-            } else {
-                mView.setIndeterminateDrawable(tileifyIndeterminate(indeterminateDrawable));
+        // FIXME: Any better way without setIndeterminateTintList?
+        if (mView instanceof SkinCompatProgressBar
+                && mIndeterminateDrawableTypedValue.isTypeNull()
+                && mIndeterminateTintTypedValue.isDataInvalid()
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ColorStateList colorStateList = SkinCompatThemeUtils.getColorAccentList(mView.getContext());
+            if (colorStateList != null) {
+                mView.setIndeterminateTintList(colorStateList);
+            }
+        } else {
+            Drawable indeterminateDrawable = mIndeterminateDrawableTypedValue.getDrawable();
+            if (indeterminateDrawable != null) {
+                indeterminateDrawable.setBounds(mView.getIndeterminateDrawable().getBounds());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mView.setIndeterminateDrawableTiled(indeterminateDrawable);
+                } else {
+                    mView.setIndeterminateDrawable(tileifyIndeterminate(indeterminateDrawable));
+                }
             }
         }
     }
