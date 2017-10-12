@@ -21,7 +21,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile project(':android-support:theme-support')
+    compile project(':android-support:theme-support-appcompat')
 }
 
 ext {
